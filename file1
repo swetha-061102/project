@@ -1,0 +1,70 @@
+#importing libraries
+import pandas as pd
+import numpy as np
+from sklearn.model_selection import train_test_split
+from sklearn.preprocessing import StandardScaler
+from sklearn.metrics import accuracy_score, precision_score, recall_score, f1_score, classification_report
+from sklearn.linear_model import LogisticRegression
+from sklearn.tree import DecisionTreeClassifier
+from sklearn.neighbors import KNeighborsClassifier
+from sklearn.svm import SVC
+from xgboost import XGBClassifier
+
+# Load the dataset
+data = pd.read_csv("diabetes.csv")
+
+#check for any null values
+data.isnull().sum()
+
+#Data Visualization
+plt.figure(figsize=(10, 8))
+sns.heatmap(data.corr(), annot=True, cmap='coolwarm')
+plt.title('Correlation Heatmap')
+plt.show()
+
+sns.countplot(data['Outcome'])
+plt.title('Target Distribution')
+plt.show()
+
+# Preprocess the data
+X = data.drop("Outcome", axis=1)  # Features
+y = data["Outcome"]  # Target
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
+
+
+#Scale the features
+scaler = StandardScaler()
+X_train = scaler.fit_transform(X_train)
+X_test = scaler.transform(X_test)
+
+#Initialize models
+models = {
+    'Logistic Regression': LogisticRegression(),
+    'Decision Tree': DecisionTreeClassifier(),
+    'K-Nearest Neighbors': KNeighborsClassifier(),
+    'SVM': SVC(probability=True),
+    'XGBoost': XGBClassifier(use_label_encoder=False, eval_metric='logloss')
+}
+
+# Train and evaluate each model
+results = {}
+for model_name, model in models.items():
+    model.fit(X_train, y_train)
+    y_pred = model.predict(X_test)
+    acc = accuracy_score(y_test, y_pred)
+    results[model_name] = acc
+    print(f"{model_name} Accuracy: {acc:.2f}")
+
+# Step 12: Compare results
+best_model = max(results, key=results.get)
+print("\nBest Model:", best_model, "with Accuracy:", results[best_model])
+
+
+#Output
+Logistic Regression Accuracy: 0.77
+Decision Tree Accuracy: 0.72
+K-Nearest Neighbors Accuracy: 0.76
+SVM Accuracy: 0.76
+XGBoost Accuracy: 0.75
+
+Best Model: Logistic Regression with Accuracy: 0.7662337662337663
