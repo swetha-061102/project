@@ -60,11 +60,3 @@ best_model = max(results, key=results.get)
 print("\nBest Model:", best_model, "with Accuracy:", results[best_model])
 
 
-#Output
-Logistic Regression Accuracy: 0.77
-Decision Tree Accuracy: 0.72
-K-Nearest Neighbors Accuracy: 0.76
-SVM Accuracy: 0.76
-XGBoost Accuracy: 0.75
-
-Best Model: Logistic Regression with Accuracy: 0.7662337662337663
