@@ -55,7 +55,7 @@ for model_name, model in models.items():
     results[model_name] = acc
     print(f"{model_name} Accuracy: {acc:.2f}")
 
-# Step 12: Compare results
+# Compare results
 best_model = max(results, key=results.get)
 print("\nBest Model:", best_model, "with Accuracy:", results[best_model])
 
